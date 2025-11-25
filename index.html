@@ -120,6 +120,11 @@
       flex: 1;
     }
 
+    /* отступ между секциями (каталоги ↔ видео ↔ админка) */
+    section + section {
+      margin-top: 26px;
+    }
+
     .file-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -351,7 +356,8 @@
               PDF-каталог по решениям ЖД освещения.
             </p>
             <div class="file-meta">
-              <span class="meta-pill">PDF • ~12 МБ</span>
+              <span class="meta-pill">PDF</span>
+              <span class="meta-pill">~12 МБ</span>
               <span class="meta-pill">каталог</span>
             </div>
           </div>
@@ -374,7 +380,8 @@
               PDF-каталог светодиодных светильников и ламп Zenit.
             </p>
             <div class="file-meta">
-              <span class="meta-pill">PDF • ~62 МБ</span>
+              <span class="meta-pill">PDF</span>
+              <span class="meta-pill">~62 МБ</span>
               <span class="meta-pill">каталог</span>
             </div>
           </div>
@@ -397,7 +404,8 @@
               PDF-каталог светодиодных фар и фонарей Zenit.
             </p>
             <div class="file-meta">
-              <span class="meta-pill">PDF • ~53 МБ</span>
+              <span class="meta-pill">PDF</span>
+              <span class="meta-pill">~53 МБ</span>
               <span class="meta-pill">каталог</span>
             </div>
           </div>
@@ -428,6 +436,7 @@
             </p>
             <div class="file-meta">
               <span class="meta-pill">MP4</span>
+              <span class="meta-pill">824 МБ</span>
               <span class="meta-pill">03.04.2025</span>
             </div>
           </div>
@@ -456,6 +465,7 @@
             </p>
             <div class="file-meta">
               <span class="meta-pill">MP4</span>
+              <span class="meta-pill">342 МБ</span>
               <span class="meta-pill">22.04.2024</span>
             </div>
           </div>
@@ -475,7 +485,7 @@
       </section>
 
       <!-- Скрытая админ-панель -->
-      <section id="admin-panel" style="display:none; margin-top: 24px;">
+      <section id="admin-panel" style="display:none;">
         <div class="file-card">
           <div class="file-body">
             <h2 class="file-title">Админ-панель ZenitFiles</h2>
