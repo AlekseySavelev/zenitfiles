@@ -283,6 +283,19 @@
         padding: 10px 10px 12px;
       }
     }
+
+    .admin-button {
+  cursor: pointer;
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--muted);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  font: inherit;
+}
+.admin-button:hover {
+  border-color: var(--accent);
+  color: #e5e7eb;
+}
+
   </style>
 </head>
 <body>
@@ -298,17 +311,23 @@
         </div>
       </div>
       <div class="info-row">
-        <div class="pill">
-        <span class="pill-dot"></span>
-        <span id="files-info">Считаем файлы…</span>
-      </div>
-        <div class="pill">
-          ⚡ Быстрая загрузка
-        </div>
-        <div class="pill">
-          💾 Файлы без регистрации
-        </div>
-      </div>
+  <div class="pill">
+    <span class="pill-dot"></span>
+    <span id="files-info">Считаем файлы…</span>
+  </div>
+  <div class="pill">
+    ⚡ Быстрая загрузка
+  </div>
+  <div class="pill">
+    💾 Файлы без регистрации
+  </div>
+
+  <!-- Кнопка админа -->
+  <button class="pill admin-button" type="button" onclick="openAdmin()">
+    🔐 Админка
+  </button>
+</div>
+      
     </header>
 
     <main>
@@ -383,6 +402,24 @@
     </div>
   </article>
 
+</section>
+<!-- Скрытая админ-панель -->
+<section id="admin-panel" style="display:none; margin-top: 24px;">
+  <div class="file-card">
+    <div class="file-body">
+      <h2 class="file-title">Админ-панель ZenitFiles</h2>
+      <p class="file-desc">
+        Здесь можно хранить служебную информацию: ссылки на GitHub Releases,
+        заметки по обновлению файлов, черновики описаний и т.п.
+      </p>
+      <ul class="file-desc" style="margin-top: 8px; padding-left: 18px;">
+        <li>1. Перейди в репозиторий → <b>Releases</b>.</li>
+        <li>2. Открой релиз <b>v1</b> (или создай новый).</li>
+        <li>3. Залей новые файлы / замени старые.</li>
+        <li>4. Скопируй ссылку на файл и обнови <code>index.html</code>.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 
     </main>
@@ -476,6 +513,21 @@
   }
 
   updateFilesInfo();
+
+  function openAdmin() {
+    const pass = prompt("Введите пароль администратора:");
+    // !!! ПОМЕНЯЙ ЗДЕСЬ ПАРОЛЬ НА СВОЙ !!!
+    const correct = "310172431";
+
+    if (pass === correct) {
+      document.getElementById("admin-panel").style.display = "block";
+      alert("Админ-панель разблокирована.");
+    } else if (pass !== null) {
+      alert("Неверный пароль.");
+    }
+  }
+
+  updateFilesInfo(); // как уже было
 </script>
 </body>
 </html>
