@@ -286,6 +286,36 @@
       }
     }
 
+    /* ----- АДАПТИВНАЯ СЕТКА ДЛЯ ВИДЕО ----- */
+
+/* Базовая ширина — чтобы влезало до 3 штук */
+.video-card {
+  max-width: 380px;   /* ширина одной карточки */
+  margin: 0 auto;     /* центрирование */
+}
+
+/* □ телефоны — 1 в ряд */
+@media (max-width: 600px) {
+  .video-card {
+    max-width: 100%;
+  }
+}
+
+/* □ планшеты — 2 в ряд */
+@media (min-width: 600px) and (max-width: 1100px) {
+  .file-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* □ большие экраны — 3 в ряд */
+@media (min-width: 1100px) {
+  .file-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+
     .admin-button {
   cursor: pointer;
   background: rgba(15, 23, 42, 0.9);
@@ -409,7 +439,7 @@
 <section class="file-grid">
 
   <!-- 1. 2025 презентация – Zenit -->
-  <article class="file-card">
+  <article class="file-card video-card">
   <div class="file-cover-wrap">
     <img src="covers/Cover4.png"
          alt="2025 презентация – Zenit"
@@ -440,7 +470,7 @@
 </section>
 
 <section>
-  <article class="file-card">
+  <article class="file-card video-card">
   <div class="file-cover-wrap">
     <!-- пока заглушка; потом заменишь на свою обложку -->
     <img src="covers/Cover5.png"
