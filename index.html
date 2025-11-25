@@ -299,9 +299,9 @@
       </div>
       <div class="info-row">
         <div class="pill">
-          <span class="pill-dot"></span>
-          Доступно 8 файлов • ~3 ГБ
-        </div>
+        <span class="pill-dot"></span>
+        <span id="files-info">Считаем файлы…</span>
+      </div>
         <div class="pill">
           ⚡ Быстрая загрузка
         </div>
@@ -394,8 +394,89 @@
   </div>
 
   <script>
-    // автоматически подставляем текущий год в подвал
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  // год в подвале
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // форматирование размера
+  function formatBytes(bytes) {
+    const units = ["Б", "КБ", "МБ", "ГБ", "ТБ"];
+    let i = 0;
+    let value = bytes;
+
+    while (value >= 1024 && i < units.length - 1) {
+      value = value / 1024;
+      i++;
+    }
+
+    const fixed =
+      value >= 10 || i === 0
+        ? value.toFixed(0)
+        : value.toFixed(1);
+
+    return fixed.replace(".", ",") + " " + units[i];
+  }
+
+  async function updateFilesInfo() {
+    const links = Array.from(document.querySelectorAll(".download-btn"));
+    if (!links.length) return;
+
+    const uniqueHrefs = [...new Set(links.map(a => a.href))];
+    let totalBytes = 0;
+
+    await Promise.all(
+      uniqueHrefs.map(async (url) => {
+        // берём первую ссылку с таким href
+        const linkEl = links.find(a => a.href === url);
+
+        // 1) если задан data-size — используем его
+        const sizeAttr = linkEl && linkEl.getAttribute("data-size");
+        if (sizeAttr) {
+          const size = parseInt(sizeAttr, 10);
+          if (!isNaN(size)) totalBytes += size;
+          return;
+        }
+
+        // 2) иначе пытаемся запросить размер через HEAD
+        try {
+          const res = await fetch(url, { method: "HEAD" });
+          const len = res.headers.get("content-length");
+          if (len) {
+            const size = parseInt(len, 10);
+            if (!isNaN(size)) totalBytes += size;
+          }
+        } catch (e) {
+          // если не получилось — просто пропускаем
+        }
+      })
+    );
+
+    const el = document.getElementById("files-info");
+    if (!el) return;
+
+    const count = uniqueHrefs.length;
+    let text = "Доступно " + count + " файл";
+
+    // простое окончание слова
+    if (count % 10 === 1 && count % 100 !== 11) {
+      text += "";
+    } else if (
+      [2, 3, 4].includes(count % 10) &&
+      ![12, 13, 14].includes(count % 100)
+    ) {
+      text += "а";
+    } else {
+      text += "ов";
+    }
+
+    if (totalBytes > 0) {
+      text += " • " + formatBytes(totalBytes);
+    }
+
+    el.textContent = text;
+  }
+
+  updateFilesInfo();
+</script>
 </body>
 </html>
+
