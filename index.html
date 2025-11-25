@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>ZenitFiles — загрузка файлов</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="ZenitFiles — простое хранилище файлов для скачивания." />
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1020;
+      --card: #10182a;
+      --accent: #3b82f6;
+      --accent-soft: rgba(59, 130, 246, 0.12);
+      --text: #f9fafb;
+      --muted: #9ca3af;
+      --border: rgba(148, 163, 184, 0.2);
+      --radius-xl: 18px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: conic-gradient(from 160deg, #60a5fa, #22d3ee, #6366f1, #60a5fa);
+      padding: 2px;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
+    }
+
+    .logo-mark-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 0, rgba(248, 250, 252, 0.5), #020617);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .title-block h1 {
+      font-size: clamp(24px, 3vw, 30px);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+
+    .title-block p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .file-card {
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.1), transparent 55%), var(--card);
+      border-radius: var(--radius-xl);
+      padding: 12px 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.08), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(96, 165, 250, 0.15), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.2s ease-out;
+      pointer-events: none;
+    }
+
+    .file-card:hover::before {
+      opacity: 1;
+    }
+
+    .file-cover-wrap {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      max-height: 160px;
+      background: #020617;
+    }
+
+    .file-cover {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.25s ease-out;
+    }
+
+    .file-card:hover .file-cover {
+      transform: scale(1.03);
+    }
+
+    .file-body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px 2px 0;
+      flex: 1;
+    }
+
+    .file-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .file-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .file-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .meta-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .file-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .download-btn {
+      appearance: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2563eb, #22c55e);
+      color: #f9fafb;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.55);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .download-btn span {
+      font-size: 15px;
+    }
+
+    .hint {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(30, 64, 175, 0.6);
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .wrapper {
+        padding-inline: 12px;
+      }
+      header {
+        margin-bottom: 24px;
+      }
+      .file-card {
+        padding: 10px 10px 12px;
+      }
+      .file-cover {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logo-row">
+        <div class="logo-mark">
+          <div class="logo-mark-inner">ZF</div>
+        </div>
+        <div class="title-block">
+          <h1>ZenitFiles</h1>
+          <p>Простая страница для скачивания файлов. Открой ссылку, выбери нужный файл и забери его одним кликом.</p>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          Доступно 8 файлов • ~3 ГБ
+        </div>
+        <div class="pill">
+          ⚡ Быстрая загрузка
+        </div>
+        <div class="pill">
+          💾 Файлы без регистрации
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="file-grid">
+
+        <!-- 🔽 ШАБЛОН КАРТОЧКИ ФАЙЛА 🔽
+             Скопируй этот блок <article> и поменяй:
+             - путь к обложке (src="covers/…")
+             - название файла
+             - описание
+             - размер / формат
+             - ссылку на файл (href="…") -->
+
+        <article class="file-card">
+          <div class="file-cover-wrap">
+            <!-- обложка файла -->
+            <img src="covers/file1.jpg" alt="Обложка файла 1" class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Название файла №1</h2>
+            <p class="file-desc">
+              Краткое описание, что внутри этого файла. Например: архив с проектом, инструкция, материалы и т.п.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">ZIP • 350 МБ</span>
+              <span class="meta-pill">обновлено: 2025</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <!-- ссылка на скачивание -->
+            <a class="download-btn" href="files/file1.zip" download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">одним кликом</span>
+          </div>
+        </article>
+
+        <!-- Пример второй карточки -->
+        <article class="file-card">
+          <div class="file-cover-wrap">
+            <img src="covers/file2.jpg" alt="Обложка файла 2" class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Название файла №2</h2>
+            <p class="file-desc">
+              Ещё один файл. Можно указать версию, тип контента или для кого он предназначен.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">PDF • 120 МБ</span>
+              <span class="meta-pill">версия 1.1</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn" href="files/file2.pdf" download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">PDF-документ</span>
+          </div>
+        </article>
+
+        <!-- Скопируй и адаптируй ещё 6 штук под свои файлы -->
+
+      </section>
+    </main>
+
+    <footer>
+      <span>ZenitFiles · © <span id="year"></span></span>
+      <span>Ссылка только для личного использования.</span>
+    </footer>
+  </div>
+
+  <script>
+    // автоматически подставляем текущий год в подвал
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
