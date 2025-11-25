@@ -155,10 +155,9 @@
       opacity: 1;
     }
 
-    /* Адаптивная обложка — автоматическое определение вертикальная/горизонтальная */
+    /* Адаптивная обложка */
     .file-cover-wrap {
       width: 100%;
-      aspect-ratio: auto;
       overflow: hidden;
       border-radius: 14px;
       border: 1px solid rgba(148, 163, 184, 0.28);
@@ -168,15 +167,14 @@
       background: #020617;
     }
 
-    /* Картинка сама подстраивается под своё соотношение сторон */
     .file-cover {
       width: 100%;
       height: 100%;
-      object-fit: contain;      /* показываем полностью */
+      object-fit: contain;
       object-position: center;
       background-color: #020617;
+      transition: transform 0.25s ease-out;
     }
-
 
     .file-card:hover .file-cover {
       transform: scale(1.03);
@@ -287,47 +285,26 @@
     }
 
     /* ----- АДАПТИВНАЯ СЕТКА ДЛЯ ВИДЕО ----- */
+    .file-grid-videos {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
 
-/* Базовая ширина — чтобы влезало до 3 штук */
-.video-card {
-  max-width: 380px;   /* ширина одной карточки */
-  margin: 0 auto;     /* центрирование */
-}
-
-/* □ телефоны — 1 в ряд */
-@media (max-width: 600px) {
-  .video-card {
-    max-width: 100%;
-  }
-}
-
-/* □ планшеты — 2 в ряд */
-@media (min-width: 600px) and (max-width: 1100px) {
-  .file-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
-/* □ большие экраны — 3 в ряд */
-@media (min-width: 1100px) {
-  .file-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-}
-
+    .video-card {
+      max-width: 100%;
+    }
 
     .admin-button {
-  cursor: pointer;
-  background: rgba(15, 23, 42, 0.9);
-  color: var(--muted);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  font: inherit;
-}
-.admin-button:hover {
-  border-color: var(--accent);
-  color: #e5e7eb;
-}
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      font: inherit;
+    }
 
+    .admin-button:hover {
+      border-color: var(--accent);
+      color: #e5e7eb;
+    }
   </style>
 </head>
 <body>
@@ -343,182 +320,178 @@
         </div>
       </div>
       <div class="info-row">
-  <div class="pill">
-    <span class="pill-dot"></span>
-    <span id="files-info">Считаем файлы…</span>
-  </div>
-  <div class="pill">
-    ⚡ Быстрая загрузка
-  </div>
-  <div class="pill">
-    💾 Файлы без регистрации
-  </div>
-
-  <!-- Кнопка админа -->
-  <button class="pill admin-button" type="button" onclick="openAdmin()">
-    🔐 Админка
-  </button>
-</div>
-      
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span id="files-info">Считаем файлы…</span>
+        </div>
+        <div class="pill">
+          ⚡ Быстрая загрузка
+        </div>
+        <div class="pill">
+          💾 Файлы без регистрации
+        </div>
+        <button class="pill admin-button" type="button" onclick="openAdmin()">
+          🔐 Админка
+        </button>
+      </div>
     </header>
 
     <main>
+      <!-- Каталоги -->
       <section class="file-grid">
 
-        <!-- 3. Каталог_ЖД освещение – Zenit -->
-  <article class="file-card">
-    <div class="file-cover-wrap">
-      <img src="covers/Cover1.png" alt="Каталог ХД освещение – Zenit" class="file-cover" />
-    </div>
-    <div class="file-body">
-      <h2 class="file-title">Каталог: ЖД освещение – Zenit</h2>
-      <p class="file-desc">
-        PDF-каталог по решениям ЖД освещения.
-      </p>
-      <div class="file-meta">
-        <span class="meta-pill">PDF • ~12 МБ</span>
-        <span class="meta-pill">каталог</span>
-      </div>
-    </div>
-    <div class="file-footer">
-      <a class="download-btn" href="files/Каталог_ЖД освещение - Zenit.pdf" download>
-        <span>⬇</span> Скачать
-      </a>
-      <span class="hint">PDF-файл</span>
-    </div>
-  </article>
+        <!-- 1. Каталог_ЖД освещение – Zenit -->
+        <article class="file-card">
+          <div class="file-cover-wrap">
+            <img src="covers/Cover1.png" alt="Каталог ЖД освещение – Zenit" class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Каталог: ЖД освещение – Zenit</h2>
+            <p class="file-desc">
+              PDF-каталог по решениям ЖД освещения.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">PDF • ~12 МБ</span>
+              <span class="meta-pill">каталог</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn" href="files/Каталог_ЖД освещение - Zenit.pdf" download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">PDF-файл</span>
+          </div>
+        </article>
 
-  <!-- 4. Каталог_Светодиодные светильники и лампы – Zenit -->
-  <article class="file-card">
-    <div class="file-cover-wrap">
-      <img src="covers/Cover2.png" alt="Каталог Светодиодные светильники и лампы – Zenit" class="file-cover" />
-    </div>
-    <div class="file-body">
-      <h2 class="file-title">Каталог: Светодиодные светильники и лампы</h2>
-      <p class="file-desc">
-        PDF-каталог светодиодных светильников и ламп Zenit.
-      </p>
-      <div class="file-meta">
-        <span class="meta-pill">PDF • ~62 МБ</span>
-        <span class="meta-pill">каталог</span>
-      </div>
-    </div>
-    <div class="file-footer">
-      <a class="download-btn" href="files/Каталог_Светодиодные светильники и лампы - Zenit.pdf" download>
-        <span>⬇</span> Скачать
-      </a>
-      <span class="hint">PDF-файл</span>
-    </div>
-  </article>
+        <!-- 2. Каталог_Светодиодные светильники и лампы – Zenit -->
+        <article class="file-card">
+          <div class="file-cover-wrap">
+            <img src="covers/Cover2.png" alt="Каталог Светодиодные светильники и лампы – Zenit" class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Каталог: Светодиодные светильники и лампы</h2>
+            <p class="file-desc">
+              PDF-каталог светодиодных светильников и ламп Zenit.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">PDF • ~62 МБ</span>
+              <span class="meta-pill">каталог</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn" href="files/Каталог_Светодиодные светильники и лампы - Zenit.pdf" download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">PDF-файл</span>
+          </div>
+        </article>
 
-  <!-- 5. Каталог_Светодиодные фары и фонари – Zenit -->
-  <article class="file-card">
-    <div class="file-cover-wrap">
-      <img src="covers/Cover3.png" alt="Каталог Светодиодные фары и фонари – Zenit" class="file-cover" />
-    </div>
-    <div class="file-body">
-      <h2 class="file-title">Каталог: Светодиодные фары и фонари</h2>
-      <p class="file-desc">
-        PDF-каталог светодиодных фар и фонарей Zenit.
-      </p>
-      <div class="file-meta">
-        <span class="meta-pill">PDF • ~53 МБ</span>
-        <span class="meta-pill">каталог</span>
-      </div>
-    </div>
-    <div class="file-footer">
-      <a class="download-btn" href="files/Каталог_Светодиодные фары и фонари - Zenit.pdf" download>
-        <span>⬇</span> Скачать
-      </a>
-      <span class="hint">PDF-файл</span>
-    </div>
-  </article>
+        <!-- 3. Каталог_Светодиодные фары и фонари – Zenit -->
+        <article class="file-card">
+          <div class="file-cover-wrap">
+            <img src="covers/Cover3.png" alt="Каталог Светодиодные фары и фонари – Zenit" class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Каталог: Светодиодные фары и фонари</h2>
+            <p class="file-desc">
+              PDF-каталог светодиодных фар и фонарей Zenit.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">PDF • ~53 МБ</span>
+              <span class="meta-pill">каталог</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn" href="files/Каталог_Светодиодные фары и фонари - Zenit.pdf" download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">PDF-файл</span>
+          </div>
+        </article>
 
-</section>
+      </section>
 
-<section class="file-grid">
+      <!-- Видео -->
+      <section class="file-grid file-grid-videos">
 
-  <!-- 1. 2025 презентация – Zenit -->
-  <article class="file-card video-card">
-  <div class="file-cover-wrap">
-    <img src="covers/Cover4.png"
-         alt="2025 презентация – Zenit"
-         class="file-cover" />
-  </div>
+        <!-- 1. 2025 презентация – Zenit -->
+        <article class="file-card video-card">
+          <div class="file-cover-wrap">
+            <img src="covers/Cover4.png"
+                 alt="2025 презентация – Zenit"
+                 class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">2025 презентация – Zenit</h2>
+            <p class="file-desc">
+              Видеопрезентация продукции Zenit на 2025 год.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">MP4</span>
+              <span class="meta-pill">03.04.2025</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn"
+               href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/2025-Zenit.mp4"
+               data-size="844021760"
+               download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">видеофайл</span>
+          </div>
+        </article>
 
-  <div class="file-body">
-    <h2 class="file-title">2025 презентация – Zenit</h2>
-    <p class="file-desc">
-      Видеопрезентация продукции Zenit на 2025 год.
-    </p>
-    <div class="file-meta">
-      <span class="meta-pill">MP4</span>
-      <span class="meta-pill">03.04.2025</span>
-    </div>
-  </div>
+        <!-- 2. Архитектурное освещение – Zenit -->
+        <article class="file-card video-card">
+          <div class="file-cover-wrap">
+            <img src="covers/Cover5.png"
+                 alt="Архитектурное освещение – Zenit"
+                 class="file-cover" />
+          </div>
+          <div class="file-body">
+            <h2 class="file-title">Архитектурное освещение – Zenit</h2>
+            <p class="file-desc">
+              Видеоролик о решениях Zenit для архитектурной подсветки.
+            </p>
+            <div class="file-meta">
+              <span class="meta-pill">MP4</span>
+              <span class="meta-pill">22.04.2024</span>
+            </div>
+          </div>
+          <div class="file-footer">
+            <a class="download-btn"
+               href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/Arch.Zenit.mp4"
+               data-size="350614528"
+               download>
+              <span>⬇</span> Скачать
+            </a>
+            <span class="hint">видеофайл</span>
+          </div>
+        </article>
 
-  <div class="file-footer">
-    <a class="download-btn"
-       href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/2025-Zenit.mp4"
-       data-size="844021760"
-       download>
-      <span>⬇</span> Скачать
-    </a>
-    <span class="hint">видеофайл</span>
-  </div>
-</article>
-</section>
+        <!-- сюда потом можно добавить остальные видео такими же карточками -->
 
-<section>
-  <article class="file-card video-card">
-  <div class="file-cover-wrap">
-    <!-- пока заглушка; потом заменишь на свою обложку -->
-    <img src="covers/Cover5.png"
-         alt="Архитектурное освещение – Zenit"
-         class="file-cover" />
-  </div>
+      </section>
 
-  <div class="file-body">
-    <h2 class="file-title">Архитектурное освещение – Zenit</h2>
-    <p class="file-desc">
-      Видеоролик о решениях Zenit для архитектурной подсветки.
-    </p>
-    <div class="file-meta">
-      <span class="meta-pill">MP4</span>
-      <span class="meta-pill">22.04.2024</span>
-    </div>
-  </div>
-
-  <div class="file-footer">
-    <a class="download-btn"
-       href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/Arch.Zenit.mp4"
-       data-size="350614528"
-       download>
-      <span>⬇</span> Скачать
-    </a>
-    <span class="hint">видеофайл</span>
-  </div>
-</article>
-</section>
-
-<!-- Скрытая админ-панель -->
-<section id="admin-panel" style="display:none; margin-top: 24px;">
-  <div class="file-card">
-    <div class="file-body">
-      <h2 class="file-title">Админ-панель ZenitFiles</h2>
-      <p class="file-desc">
-        Здесь можно хранить служебную информацию: ссылки на GitHub Releases,
-        заметки по обновлению файлов, черновики описаний и т.п.
-      </p>
-      <ul class="file-desc" style="margin-top: 8px; padding-left: 18px;">
-        <li>1. Перейди в репозиторий → <b>Releases</b>.</li>
-        <li>2. Открой релиз <b>v1</b> (или создай новый).</li>
-        <li>3. Залей новые файлы / замени старые.</li>
-        <li>4. Скопируй ссылку на файл и обнови <code>index.html</code>.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+      <!-- Скрытая админ-панель -->
+      <section id="admin-panel" style="display:none; margin-top: 24px;">
+        <div class="file-card">
+          <div class="file-body">
+            <h2 class="file-title">Админ-панель ZenitFiles</h2>
+            <p class="file-desc">
+              Здесь можно хранить служебную информацию: ссылки на GitHub Releases,
+              заметки по обновлению файлов, черновики описаний и т.п.
+            </p>
+            <ul class="file-desc" style="margin-top: 8px; padding-left: 18px;">
+              <li>1. Перейди в репозиторий → <b>Releases</b>.</li>
+              <li>2. Открой релиз <b>v1</b> (или создай новый).</li>
+              <li>3. Залей новые файлы / замени старые.</li>
+              <li>4. Скопируй ссылку на файл и обнови <code>index.html</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
     </main>
 
@@ -529,104 +502,96 @@
   </div>
 
   <script>
-  // год в подвале
-  document.getElementById("year").textContent = new Date().getFullYear();
+    // год в подвале
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-  // форматирование размера
-  function formatBytes(bytes) {
-    const units = ["Б", "КБ", "МБ", "ГБ", "ТБ"];
-    let i = 0;
-    let value = bytes;
+    // форматирование размера
+    function formatBytes(bytes) {
+      const units = ["Б", "КБ", "МБ", "ГБ", "ТБ"];
+      let i = 0;
+      let value = bytes;
 
-    while (value >= 1024 && i < units.length - 1) {
-      value = value / 1024;
-      i++;
+      while (value >= 1024 && i < units.length - 1) {
+        value = value / 1024;
+        i++;
+      }
+
+      const fixed =
+        value >= 10 || i === 0
+          ? value.toFixed(0)
+          : value.toFixed(1);
+
+      return fixed.replace(".", ",") + " " + units[i];
     }
 
-    const fixed =
-      value >= 10 || i === 0
-        ? value.toFixed(0)
-        : value.toFixed(1);
+    async function updateFilesInfo() {
+      const links = Array.from(document.querySelectorAll(".download-btn"));
+      if (!links.length) return;
 
-    return fixed.replace(".", ",") + " " + units[i];
-  }
+      const uniqueHrefs = [...new Set(links.map(a => a.href))];
+      let totalBytes = 0;
 
-  async function updateFilesInfo() {
-    const links = Array.from(document.querySelectorAll(".download-btn"));
-    if (!links.length) return;
+      await Promise.all(
+        uniqueHrefs.map(async (url) => {
+          const linkEl = links.find(a => a.href === url);
 
-    const uniqueHrefs = [...new Set(links.map(a => a.href))];
-    let totalBytes = 0;
-
-    await Promise.all(
-      uniqueHrefs.map(async (url) => {
-        // берём первую ссылку с таким href
-        const linkEl = links.find(a => a.href === url);
-
-        // 1) если задан data-size — используем его
-        const sizeAttr = linkEl && linkEl.getAttribute("data-size");
-        if (sizeAttr) {
-          const size = parseInt(sizeAttr, 10);
-          if (!isNaN(size)) totalBytes += size;
-          return;
-        }
-
-        // 2) иначе пытаемся запросить размер через HEAD
-        try {
-          const res = await fetch(url, { method: "HEAD" });
-          const len = res.headers.get("content-length");
-          if (len) {
-            const size = parseInt(len, 10);
+          const sizeAttr = linkEl && linkEl.getAttribute("data-size");
+          if (sizeAttr) {
+            const size = parseInt(sizeAttr, 10);
             if (!isNaN(size)) totalBytes += size;
+            return;
           }
-        } catch (e) {
-          // если не получилось — просто пропускаем
-        }
-      })
-    );
 
-    const el = document.getElementById("files-info");
-    if (!el) return;
+          try {
+            const res = await fetch(url, { method: "HEAD" });
+            const len = res.headers.get("content-length");
+            if (len) {
+              const size = parseInt(len, 10);
+              if (!isNaN(size)) totalBytes += size;
+            }
+          } catch (e) {
+            // если не получилось — просто пропускаем
+          }
+        })
+      );
 
-    const count = uniqueHrefs.length;
-    let text = "Доступно " + count + " файл";
+      const el = document.getElementById("files-info");
+      if (!el) return;
 
-    // простое окончание слова
-    if (count % 10 === 1 && count % 100 !== 11) {
-      text += "";
-    } else if (
-      [2, 3, 4].includes(count % 10) &&
-      ![12, 13, 14].includes(count % 100)
-    ) {
-      text += "а";
-    } else {
-      text += "ов";
+      const count = uniqueHrefs.length;
+      let text = "Доступно " + count + " файл";
+
+      if (count % 10 === 1 && count % 100 !== 11) {
+        text += "";
+      } else if (
+        [2, 3, 4].includes(count % 10) &&
+        ![12, 13, 14].includes(count % 100)
+      ) {
+        text += "а";
+      } else {
+        text += "ов";
+      }
+
+      if (totalBytes > 0) {
+        text += " • " + formatBytes(totalBytes);
+      }
+
+      el.textContent = text;
     }
 
-    if (totalBytes > 0) {
-      text += " • " + formatBytes(totalBytes);
+    updateFilesInfo();
+
+    function openAdmin() {
+      const pass = prompt("Введите пароль администратора:");
+      const correct = "310172431";
+
+      if (pass === correct) {
+        document.getElementById("admin-panel").style.display = "block";
+        alert("Админ-панель разблокирована.");
+      } else if (pass !== null) {
+        alert("Неверный пароль.");
+      }
     }
-
-    el.textContent = text;
-  }
-
-  updateFilesInfo();
-
-  function openAdmin() {
-    const pass = prompt("Введите пароль администратора:");
-    // !!! ПОМЕНЯЙ ЗДЕСЬ ПАРОЛЬ НА СВОЙ !!!
-    const correct = "310172431";
-
-    if (pass === correct) {
-      document.getElementById("admin-panel").style.display = "block";
-      alert("Админ-панель разблокирована.");
-    } else if (pass !== null) {
-      alert("Неверный пароль.");
-    }
-  }
-
-  updateFilesInfo(); // как уже было
-</script>
+  </script>
 </body>
 </html>
-
