@@ -310,6 +310,96 @@
       border-color: var(--accent);
       color: #e5e7eb;
     }
+
+    .simple-button {
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      font: inherit;
+    }
+
+    .simple-button:hover {
+      border-color: var(--accent);
+      color: #e5e7eb;
+    }
+
+    /* ----- УПРОЩЁННЫЙ ВИД (ТАБЛИЦА) ----- */
+    #simple-view {
+      display: none;
+    }
+
+    .simple-table {
+      background: var(--card);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .simple-header,
+    .simple-row {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1.3fr) auto;
+      gap: 12px;
+      padding: 8px 12px;
+      align-items: center;
+    }
+
+    .simple-header {
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+    }
+
+    .simple-row:nth-child(odd) {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .simple-row:nth-child(even) {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .simple-main-title {
+      font-weight: 600;
+    }
+
+    .simple-main-desc {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .simple-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .simple-meta span {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .simple-action {
+      text-align: right;
+    }
+
+    @media (max-width: 700px) {
+      .simple-header,
+      .simple-row {
+        grid-template-columns: minmax(0, 1fr);
+        align-items: flex-start;
+      }
+      .simple-action {
+        text-align: left;
+      }
+    }
   </style>
 </head>
 <body>
@@ -338,10 +428,262 @@
         <button class="pill admin-button" type="button" onclick="openAdmin()">
           🔐 Админка
         </button>
+        <button class="pill simple-button" type="button" id="simple-toggle-btn" onclick="toggleSimpleMode()">
+          ☰ Упрощённый вид
+        </button>
       </div>
     </header>
 
     <main>
+      <!-- ОБЫЧНЫЙ РЕЖИМ (КАРТОЧКИ) -->
+      <div id="cards-view">
+        <!-- Каталоги -->
+        <section class="file-grid">
+
+          <!-- 1. Каталог_ЖД освещение – Zenit -->
+          <article class="file-card">
+            <div class="file-cover-wrap">
+              <img src="covers/Cover1.png" alt="Каталог ЖД освещение – Zenit" class="file-cover" />
+            </div>
+            <div class="file-body">
+              <h2 class="file-title">Каталог: ЖД освещение – Zenit</h2>
+              <p class="file-desc">
+                PDF-каталог по решениям ЖД освещения.
+              </p>
+              <div class="file-meta">
+                <span class="meta-pill">PDF</span>
+                <span class="meta-pill">~12 МБ</span>
+                <span class="meta-pill">каталог</span>
+              </div>
+            </div>
+            <div class="file-footer">
+              <a class="download-btn" href="files/Каталог_ЖД освещение - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+              <span class="hint">PDF-файл</span>
+            </div>
+          </article>
+
+          <!-- 2. Каталог_Светодиодные светильники и лампы – Zenit -->
+          <article class="file-card">
+            <div class="file-cover-wrap">
+              <img src="covers/Cover2.png" alt="Каталог Светодиодные светильники и лампы – Zenit" class="file-cover" />
+            </div>
+            <div class="file-body">
+              <h2 class="file-title">Каталог: Светодиодные светильники и лампы</h2>
+              <p class="file-desc">
+                PDF-каталог светодиодных светильников и ламп Zenit.
+              </p>
+              <div class="file-meta">
+                <span class="meta-pill">PDF</span>
+                <span class="meta-pill">~62 МБ</span>
+                <span class="meta-pill">каталог</span>
+              </div>
+            </div>
+            <div class="file-footer">
+              <a class="download-btn" href="files/Каталог_Светодиодные светильники и лампы - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+              <span class="hint">PDF-файл</span>
+            </div>
+          </article>
+
+          <!-- 3. Каталог_Светодиодные фары и фонари – Zenit -->
+          <article class="file-card">
+            <div class="file-cover-wrap">
+              <img src="covers/Cover3.png" alt="Каталог Светодиодные фары и фонари – Zenit" class="file-cover" />
+            </div>
+            <div class="file-body">
+              <h2 class="file-title">Каталог: Светодиодные фары и фонари</h2>
+              <p class="file-desc">
+                PDF-каталог светодиодных фар и фонарей Zenit.
+              </p>
+              <div class="file-meta">
+                <span class="meta-pill">PDF</span>
+                <span class="meta-pill">~53 МБ</span>
+                <span class="meta-pill">каталог</span>
+              </div>
+            </div>
+            <div class="file-footer">
+              <a class="download-btn" href="files/Каталог_Светодиодные фары и фонари - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+              <span class="hint">PDF-файл</span>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- Видео -->
+        <section class="file-grid file-grid-videos">
+
+          <!-- 1. 2025 презентация – Zenit -->
+          <article class="file-card video-card">
+            <div class="file-cover-wrap">
+              <img src="covers/Cover4.png"
+                   alt="2025 презентация – Zenit"
+                   class="file-cover" />
+            </div>
+            <div class="file-body">
+              <h2 class="file-title">2025 презентация – Zenit</h2>
+              <p class="file-desc">
+                Видеопрезентация продукции Zenit на 2025 год.
+              </p>
+              <div class="file-meta">
+                <span class="meta-pill">MP4</span>
+                <span class="meta-pill">824 МБ</span>
+                <span class="meta-pill">03.04.2025</span>
+              </div>
+            </div>
+            <div class="file-footer">
+              <a class="download-btn"
+                 href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/2025-Zenit.mp4"
+                 data-size="844021760"
+                 download>
+                <span>⬇</span> Скачать
+              </a>
+              <span class="hint">видеофайл</span>
+            </div>
+          </article>
+
+          <!-- 2. Архитектурное освещение – Zenit -->
+          <article class="file-card video-card">
+            <div class="file-cover-wrap">
+              <img src="covers/Cover5.png"
+                   alt="Архитектурное освещение – Zenit"
+                   class="file-cover" />
+            </div>
+            <div class="file-body">
+              <h2 class="file-title">Архитектурное освещение – Zenit</h2>
+              <p class="file-desc">
+                Видеоролик о решениях Zenit для архитектурной подсветки.
+              </p>
+              <div class="file-meta">
+                <span class="meta-pill">MP4</span>
+                <span class="meta-pill">342 МБ</span>
+                <span class="meta-pill">22.04.2024</span>
+              </div>
+            </div>
+            <div class="file-footer">
+              <a class="download-btn"
+                 href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/Arch.Zenit.mp4"
+                 data-size="350614528"
+                 download>
+                <span>⬇</span> Скачать
+              </a>
+              <span class="hint">видеофайл</span>
+            </div>
+          </article>
+
+          <!-- сюда потом можно добавить остальные видео такими же карточками -->
+
+        </section>
+      </div>
+
+      <!-- УПРОЩЁННЫЙ РЕЖИМ (ТАБЛИЦА) -->
+      <section id="simple-view">
+        <div class="simple-table">
+          <div class="simple-header">
+            <span>Файл</span>
+            <span>Тип / размер</span>
+            <span>Скачать</span>
+          </div>
+
+          <!-- Каталог: ЖД освещение -->
+          <div class="simple-row">
+            <div>
+              <div class="simple-main-title">Каталог: ЖД освещение – Zenit</div>
+              <div class="simple-main-desc">PDF-каталог по решениям ЖД освещения.</div>
+            </div>
+            <div class="simple-meta">
+              <span>PDF</span>
+              <span>~12 МБ</span>
+            </div>
+            <div class="simple-action">
+              <a class="download-btn" href="files/Каталог_ЖД освещение - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+            </div>
+          </div>
+
+          <!-- Каталог: Светильники и лампы -->
+          <div class="simple-row">
+            <div>
+              <div class="simple-main-title">Каталог: Светодиодные светильники и лампы</div>
+              <div class="simple-main-desc">PDF-каталог светодиодных светильников и ламп Zenit.</div>
+            </div>
+            <div class="simple-meta">
+              <span>PDF</span>
+              <span>~62 МБ</span>
+            </div>
+            <div class="simple-action">
+              <a class="download-btn" href="files/Каталог_Светодиодные светильники и лампы - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+            </div>
+          </div>
+
+          <!-- Каталог: фары и фонари -->
+          <div class="simple-row">
+            <div>
+              <div class="simple-main-title">Каталог: Светодиодные фары и фонари</div>
+              <div class="simple-main-desc">PDF-каталог светодиодных фар и фонарей Zenit.</div>
+            </div>
+            <div class="simple-meta">
+              <span>PDF</span>
+              <span>~53 МБ</span>
+            </div>
+            <div class="simple-action">
+              <a class="download-btn" href="files/Каталог_Светодиодные фары и фонари - Zenit.pdf" download>
+                <span>⬇</span> Скачать
+              </a>
+            </div>
+          </div>
+
+          <!-- Видео: 2025 презентация -->
+          <div class="simple-row">
+            <div>
+              <div class="simple-main-title">2025 презентация – Zenit</div>
+              <div class="simple-main-desc">Видеопрезентация продукции Zenit на 2025 год.</div>
+            </div>
+            <div class="simple-meta">
+              <span>MP4</span>
+              <span>824 МБ</span>
+            </div>
+            <div class="simple-action">
+              <a class="download-btn"
+                 href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/2025-Zenit.mp4"
+                 data-size="844021760"
+                 download>
+                <span>⬇</span> Скачать
+              </a>
+            </div>
+          </div>
+
+          <!-- Видео: Архитектурное освещение -->
+          <div class="simple-row">
+            <div>
+              <div class="simple-main-title">Архитектурное освещение – Zenit</div>
+              <div class="simple-main-desc">Видеоролик о решениях Zenit для архитектурной подсветки.</div>
+            </div>
+            <div class="simple-meta">
+              <span>MP4</span>
+              <span>342 МБ</span>
+            </div>
+            <div class="simple-action">
+              <a class="download-btn"
+                 href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/Arch.Zenit.mp4"
+                 data-size="350614528"
+                 download>
+                <span>⬇</span> Скачать
+              </a>
+            </div>
+          </div>
+
+          <!-- сюда потом добавишь остальные файлы аналогично -->
+
+        </div>
+      </section>
 
       <!-- Скрытая админ-панель -->
       <section id="admin-panel" style="display:none;">
@@ -360,148 +702,6 @@
             </ul>
           </div>
         </div>
-      </section>
-      
-      <!-- Каталоги -->
-      <section class="file-grid">
-
-        <!-- 1. Каталог_ЖД освещение – Zenit -->
-        <article class="file-card">
-          <div class="file-cover-wrap">
-            <img src="covers/Cover1.png" alt="Каталог ЖД освещение – Zenit" class="file-cover" />
-          </div>
-          <div class="file-body">
-            <h2 class="file-title">Каталог: ЖД освещение – Zenit</h2>
-            <p class="file-desc">
-              PDF-каталог по решениям ЖД освещения.
-            </p>
-            <div class="file-meta">
-              <span class="meta-pill">PDF</span>
-              <span class="meta-pill">~12 МБ</span>
-              <span class="meta-pill">каталог</span>
-            </div>
-          </div>
-          <div class="file-footer">
-            <a class="download-btn" href="files/Каталог_ЖД освещение - Zenit.pdf" download>
-              <span>⬇</span> Скачать
-            </a>
-            <span class="hint">PDF-файл</span>
-          </div>
-        </article>
-
-        <!-- 2. Каталог_Светодиодные светильники и лампы – Zenit -->
-        <article class="file-card">
-          <div class="file-cover-wrap">
-            <img src="covers/Cover2.png" alt="Каталог Светодиодные светильники и лампы – Zenit" class="file-cover" />
-          </div>
-          <div class="file-body">
-            <h2 class="file-title">Каталог: Светодиодные светильники и лампы</h2>
-            <p class="file-desc">
-              PDF-каталог светодиодных светильников и ламп Zenit.
-            </p>
-            <div class="file-meta">
-              <span class="meta-pill">PDF</span>
-              <span class="meta-pill">~62 МБ</span>
-              <span class="meta-pill">каталог</span>
-            </div>
-          </div>
-          <div class="file-footer">
-            <a class="download-btn" href="files/Каталог_Светодиодные светильники и лампы - Zenit.pdf" download>
-              <span>⬇</span> Скачать
-            </a>
-            <span class="hint">PDF-файл</span>
-          </div>
-        </article>
-
-        <!-- 3. Каталог_Светодиодные фары и фонари – Zenit -->
-        <article class="file-card">
-          <div class="file-cover-wrap">
-            <img src="covers/Cover3.png" alt="Каталог Светодиодные фары и фонари – Zenit" class="file-cover" />
-          </div>
-          <div class="file-body">
-            <h2 class="file-title">Каталог: Светодиодные фары и фонари</h2>
-            <p class="file-desc">
-              PDF-каталог светодиодных фар и фонарей Zenit.
-            </p>
-            <div class="file-meta">
-              <span class="meta-pill">PDF</span>
-              <span class="meta-pill">~53 МБ</span>
-              <span class="meta-pill">каталог</span>
-            </div>
-          </div>
-          <div class="file-footer">
-            <a class="download-btn" href="files/Каталог_Светодиодные фары и фонари - Zenit.pdf" download>
-              <span>⬇</span> Скачать
-            </a>
-            <span class="hint">PDF-файл</span>
-          </div>
-        </article>
-
-      </section>
-
-      <!-- Видео -->
-      <section class="file-grid file-grid-videos">
-
-        <!-- 1. 2025 презентация – Zenit -->
-        <article class="file-card video-card">
-          <div class="file-cover-wrap">
-            <img src="covers/Cover4.png"
-                 alt="2025 презентация – Zenit"
-                 class="file-cover" />
-          </div>
-          <div class="file-body">
-            <h2 class="file-title">2025 презентация – Zenit</h2>
-            <p class="file-desc">
-              Видеопрезентация продукции Zenit на 2025 год.
-            </p>
-            <div class="file-meta">
-              <span class="meta-pill">MP4</span>
-              <span class="meta-pill">824 МБ</span>
-              <span class="meta-pill">03.04.2025</span>
-            </div>
-          </div>
-          <div class="file-footer">
-            <a class="download-btn"
-               href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/2025-Zenit.mp4"
-               data-size="844021760"
-               download>
-              <span>⬇</span> Скачать
-            </a>
-            <span class="hint">видеофайл</span>
-          </div>
-        </article>
-
-        <!-- 2. Архитектурное освещение – Zenit -->
-        <article class="file-card video-card">
-          <div class="file-cover-wrap">
-            <img src="covers/Cover5.png"
-                 alt="Архитектурное освещение – Zenit"
-                 class="file-cover" />
-          </div>
-          <div class="file-body">
-            <h2 class="file-title">Архитектурное освещение – Zenit</h2>
-            <p class="file-desc">
-              Видеоролик о решениях Zenit для архитектурной подсветки.
-            </p>
-            <div class="file-meta">
-              <span class="meta-pill">MP4</span>
-              <span class="meta-pill">342 МБ</span>
-              <span class="meta-pill">22.04.2024</span>
-            </div>
-          </div>
-          <div class="file-footer">
-            <a class="download-btn"
-               href="https://github.com/AlekseySavelev/zenitfiles/releases/download/V1/Arch.Zenit.mp4"
-               data-size="350614528"
-               download>
-              <span>⬇</span> Скачать
-            </a>
-            <span class="hint">видеофайл</span>
-          </div>
-        </article>
-
-        <!-- сюда потом можно добавить остальные видео такими же карточками -->
-
       </section>
 
     </main>
@@ -601,6 +801,26 @@
         alert("Админ-панель разблокирована.");
       } else if (pass !== null) {
         alert("Неверный пароль.");
+      }
+    }
+
+    function toggleSimpleMode() {
+      const cards = document.getElementById("cards-view");
+      const simple = document.getElementById("simple-view");
+      const btn = document.getElementById("simple-toggle-btn");
+
+      const simpleOn = simple.style.display !== "none" && simple.style.display !== "";
+
+      if (simpleOn) {
+        // ВОЗВРАТ к карточкам
+        if (cards) cards.style.display = "";
+        if (simple) simple.style.display = "none";
+        if (btn) btn.textContent = "☰ Упрощённый вид";
+      } else {
+        // ВКЛЮЧЕНИЕ упрощённого вида
+        if (cards) cards.style.display = "none";
+        if (simple) simple.style.display = "block";
+        if (btn) btn.textContent = "⬅ Полный вид";
       }
     }
   </script>
