@@ -298,19 +298,7 @@
       max-width: 100%;
     }
 
-    .admin-button {
-      cursor: pointer;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      font: inherit;
-    }
-
-    .admin-button:hover {
-      border-color: var(--accent);
-      color: #e5e7eb;
-    }
-
+    .admin-button,
     .simple-button {
       cursor: pointer;
       background: rgba(15, 23, 42, 0.9);
@@ -319,6 +307,7 @@
       font: inherit;
     }
 
+    .admin-button:hover,
     .simple-button:hover {
       border-color: var(--accent);
       color: #e5e7eb;
@@ -400,6 +389,55 @@
         text-align: left;
       }
     }
+
+    /* ----- Админ-панель ----- */
+    #admin-panel .file-card {
+      border-style: dashed;
+    }
+
+    .admin-section {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .admin-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .admin-list {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 16px;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .admin-list li + li {
+      margin-top: 3px;
+    }
+
+    .admin-toggles {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .admin-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .admin-toggle input {
+      accent-color: #22c55e;
+    }
+
   </style>
 </head>
 <body>
@@ -438,7 +476,7 @@
       <!-- ОБЫЧНЫЙ РЕЖИМ (КАРТОЧКИ) -->
       <div id="cards-view">
         <!-- Каталоги -->
-        <section class="file-grid">
+        <section id="catalogs-section" class="file-grid">
 
           <!-- 1. Каталог_ЖД освещение – Zenit -->
           <article class="file-card">
@@ -515,7 +553,7 @@
         </section>
 
         <!-- Видео -->
-        <section class="file-grid file-grid-videos">
+        <section id="videos-section" class="file-grid file-grid-videos">
 
           <!-- 1. 2025 презентация – Zenit -->
           <article class="file-card video-card">
@@ -590,7 +628,7 @@
           </div>
 
           <!-- Каталог: ЖД освещение -->
-          <div class="simple-row">
+          <div class="simple-row" data-group="catalog">
             <div>
               <div class="simple-main-title">Каталог: ЖД освещение – Zenit</div>
               <div class="simple-main-desc">PDF-каталог по решениям ЖД освещения.</div>
@@ -607,7 +645,7 @@
           </div>
 
           <!-- Каталог: Светильники и лампы -->
-          <div class="simple-row">
+          <div class="simple-row" data-group="catalog">
             <div>
               <div class="simple-main-title">Каталог: Светодиодные светильники и лампы</div>
               <div class="simple-main-desc">PDF-каталог светодиодных светильников и ламп Zenit.</div>
@@ -624,7 +662,7 @@
           </div>
 
           <!-- Каталог: фары и фонари -->
-          <div class="simple-row">
+          <div class="simple-row" data-group="catalog">
             <div>
               <div class="simple-main-title">Каталог: Светодиодные фары и фонари</div>
               <div class="simple-main-desc">PDF-каталог светодиодных фар и фонарей Zenit.</div>
@@ -641,7 +679,7 @@
           </div>
 
           <!-- Видео: 2025 презентация -->
-          <div class="simple-row">
+          <div class="simple-row" data-group="video">
             <div>
               <div class="simple-main-title">2025 презентация – Zenit</div>
               <div class="simple-main-desc">Видеопрезентация продукции Zenit на 2025 год.</div>
@@ -661,7 +699,7 @@
           </div>
 
           <!-- Видео: Архитектурное освещение -->
-          <div class="simple-row">
+          <div class="simple-row" data-group="video">
             <div>
               <div class="simple-main-title">Архитектурное освещение – Zenit</div>
               <div class="simple-main-desc">Видеоролик о решениях Zenit для архитектурной подсветки.</div>
@@ -691,15 +729,82 @@
           <div class="file-body">
             <h2 class="file-title">Админ-панель ZenitFiles</h2>
             <p class="file-desc">
-              Здесь можно хранить служебную информацию: ссылки на GitHub Releases,
-              заметки по обновлению файлов, черновики описаний и т.п.
+              Это служебная зона, видимая только тебе. Пароль хранится в коде страницы,
+              поэтому полную секретность она не даёт, но защищает от случайных пользователей.
             </p>
-            <ul class="file-desc" style="margin-top: 8px; padding-left: 18px;">
-              <li>1. Перейди в репозиторий → <b>Releases</b>.</li>
-              <li>2. Открой релиз <b>v1</b> (или создай новый).</li>
-              <li>3. Залей новые файлы / замени старые.</li>
-              <li>4. Скопируй ссылку на файл и обнови <code>index.html</code>.</li>
-            </ul>
+
+            <div class="admin-section">
+              <div class="admin-section-title">1. Как добавить новый PDF-каталог</div>
+              <ol class="admin-list">
+                <li><b>Скопируй PDF-файл</b> в папку <code>/files</code> в репозитории (через проводник и GitHub Desktop).</li>
+                <li>В файле <code>index.html</code> <b>скопируй любую существующую карточку каталога</b>
+                  внутри секции «Каталоги» и вставь ниже. Поменяй:
+                  название, описание, путь к файлу <code>href="files/..."</code>, текст размера.</li>
+                <li>В блоке «Упрощённый вид» (таблица) <b>скопируй строку с каталогом</b>
+                  (<code>&lt;div class="simple-row" data-group="catalog"&gt;</code>) и поменяй там текст и ссылку.</li>
+                <li>Сохрани <code>index.html</code>, в GitHub Desktop сделай
+                  <b>Commit</b> и <b>Push</b>. После этого каталог появится и в карточках, и в таблице.</li>
+              </ol>
+            </div>
+
+            <div class="admin-section">
+              <div class="admin-section-title">2. Как добавить новое видео</div>
+              <ol class="admin-list">
+                <li><b>Зайди на GitHub → репозиторий → Releases →</b> открой действующий релиз
+                  (например <code>V1</code>) или создай новый.</li>
+                <li>Перетащи MP4-файл в раздел <b>Assets</b> (Attach binaries) и дождись загрузки.</li>
+                <li>После загрузки <b>правой кнопкой по файлу → Copy link address</b> —
+                  это прямая ссылка для кнопки «Скачать».</li>
+                <li>В <code>index.html</code> в секции «Видео» (<code>#videos-section</code>) скопируй существующую
+                  карточку видео и вставь новую. Поменяй:
+                  <ul class="admin-list">
+                    <li>обложку (<code>src="covers/..."</code>),</li>
+                    <li>название и описание,</li>
+                    <li>дату / размер в <code>.file-meta</code>,</li>
+                    <li>ссылку <code>href="https://github.com/.../video.mp4"</code>,</li>
+                    <li>атрибут <code>data-size</code> — точный размер файла в байтах
+                      (берётся из «Свойства файла» в Windows → «Размер (байт)»).</li>
+                  </ul>
+                </li>
+                <li>В блоке «Упрощённый вид» скопируй строку
+                  <code>&lt;div class="simple-row" data-group="video"&gt;</code> и обнови там текст и ссылку.</li>
+                <li>Сохрани <code>index.html</code>, сделай <b>Commit</b> и <b>Push</b>.</li>
+              </ol>
+            </div>
+
+            <div class="admin-section">
+              <div class="admin-section-title">3. Настройки отображения панелей (только на этом устройстве)</div>
+              <p class="file-desc">
+                Переключатели ниже управляют видимостью блоков «Каталоги» и «Видео»
+                в карточках и в упрощённой таблице. Настройки
+                сохраняются в <b>localStorage</b> браузера:
+                они действуют только в этом браузере и на этом устройстве.
+                Для всех остальных пользователей сайт по умолчанию показывает всё.
+              </p>
+              <div class="admin-toggles">
+                <label class="admin-toggle">
+                  <input type="checkbox" id="toggle-catalogs" checked />
+                  Показывать блок «Каталоги»
+                </label>
+                <label class="admin-toggle">
+                  <input type="checkbox" id="toggle-videos" checked />
+                  Показывать блок «Видео»
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-section">
+              <div class="admin-section-title">4. Что делать, если что-то сломалось</div>
+              <ul class="admin-list">
+                <li>Если сайт не открывается или верстка «поехала» — открой
+                  последний рабочий коммит в GitHub и сравни <code>index.html</code>.</li>
+                <li>Не уверены в изменениях — сначала сделайте копию файла
+                  <code>index_backup.html</code> в репозитории.</li>
+                <li>Всегда проверяй, что в HTML нет лишних незакрытых
+                  <code>&lt;div&gt;</code> / <code>&lt;section&gt;</code>.</li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </section>
@@ -790,7 +895,71 @@
       el.textContent = text;
     }
 
-    updateFilesInfo();
+    // ----- Настройки панелей (каталоги / видео) -----
+    const PANEL_KEYS = {
+      catalogs: "zf_panel_catalogs_visible",
+      videos: "zf_panel_videos_visible",
+    };
+
+    function getPanelFlag(key, defaultValue) {
+      try {
+        const v = localStorage.getItem(key);
+        if (v === null) return defaultValue;
+        return v !== "0";
+      } catch (e) {
+        return defaultValue;
+      }
+    }
+
+    function setPanelFlag(key, value) {
+      try {
+        localStorage.setItem(key, value ? "1" : "0");
+      } catch (e) {
+        // ничего страшного, если localStorage недоступен
+      }
+    }
+
+    function applyPanelVisibility() {
+      const catalogsOn = getPanelFlag(PANEL_KEYS.catalogs, true);
+      const videosOn = getPanelFlag(PANEL_KEYS.videos, true);
+
+      const catalogsSection = document.getElementById("catalogs-section");
+      const videosSection = document.getElementById("videos-section");
+
+      if (catalogsSection) catalogsSection.style.display = catalogsOn ? "" : "none";
+      if (videosSection) videosSection.style.display = videosOn ? "" : "none";
+
+      // Упрощённый вид — строки каталога/видео
+      document.querySelectorAll(".simple-row[data-group='catalog']").forEach(row => {
+        row.style.display = catalogsOn ? "" : "none";
+      });
+      document.querySelectorAll(".simple-row[data-group='video']").forEach(row => {
+        row.style.display = videosOn ? "" : "none";
+      });
+
+      const chCat = document.getElementById("toggle-catalogs");
+      const chVid = document.getElementById("toggle-videos");
+      if (chCat) chCat.checked = catalogsOn;
+      if (chVid) chVid.checked = videosOn;
+    }
+
+    function initPanelToggles() {
+      const chCat = document.getElementById("toggle-catalogs");
+      const chVid = document.getElementById("toggle-videos");
+
+      if (chCat) {
+        chCat.addEventListener("change", function () {
+          setPanelFlag(PANEL_KEYS.catalogs, this.checked);
+          applyPanelVisibility();
+        });
+      }
+      if (chVid) {
+        chVid.addEventListener("change", function () {
+          setPanelFlag(PANEL_KEYS.videos, this.checked);
+          applyPanelVisibility();
+        });
+      }
+    }
 
     function openAdmin() {
       const pass = prompt("Введите пароль администратора:");
@@ -798,7 +967,8 @@
 
       if (pass === correct) {
         document.getElementById("admin-panel").style.display = "block";
-        alert("Админ-панель разблокирована.");
+        alert("Админ-панель разблокирована. Пролистай страницу ниже.");
+        applyPanelVisibility(); // на всякий случай обновим состояние чекбоксов
       } else if (pass !== null) {
         alert("Неверный пароль.");
       }
@@ -823,6 +993,11 @@
         if (btn) btn.textContent = "⬅ Полный вид";
       }
     }
+
+    // Инициализация
+    updateFilesInfo();
+    applyPanelVisibility();
+    initPanelToggles();
   </script>
 </body>
 </html>
