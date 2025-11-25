@@ -155,21 +155,26 @@
       opacity: 1;
     }
 
+        /* Обёртка под вертикальную обложку A4 */
     .file-cover-wrap {
       border-radius: 14px;
       overflow: hidden;
       border: 1px solid rgba(148, 163, 184, 0.28);
-      max-height: 160px;
       background: #020617;
+      aspect-ratio: 3 / 4;          /* ближе к формату A4 вертикально */
+      display: flex;
     }
 
+    /* Сама обложка растягивается по высоте */
     .file-cover {
       width: 100%;
-      height: 160px;
-      object-fit: cover;
+      height: 100%;
+      object-fit: contain;          /* вся обложка помещается целиком */
       display: block;
       transition: transform 0.25s ease-out;
+      background: #020617;          /* фон вокруг, если края остаются */
     }
+
 
     .file-card:hover .file-cover {
       transform: scale(1.03);
@@ -276,9 +281,6 @@
       }
       .file-card {
         padding: 10px 10px 12px;
-      }
-      .file-cover {
-        height: 150px;
       }
     }
   </style>
