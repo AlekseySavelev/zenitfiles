@@ -542,54 +542,100 @@ a:hover {
 
 /* псевдо-миниатюра карточек */
 .mode-illustration.cards {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;      /* делаем вертикальный столбик мини-карточек */
+  gap: 6px;
+  overflow: hidden;                /* чтобы «выезжающие» части не торчали */
 }
 
 .mode-illustration.cards div {
-  height: 46px;
+  height: 32px;
   border-radius: 10px;
   background:
     linear-gradient(to bottom, rgba(15, 23, 42, 0.1) 0, rgba(15, 23, 42, 0.9) 55%),
     url("data:image/svg+xml,%3Csvg width='60' height='32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='32' rx='5' fill='%231f2937'/%3E%3C/svg%3E");
   border: 1px solid rgba(148, 163, 184, 0.4);
+  transform: translateY(0%);
+  opacity: 1;
+  animation: cardsScrollItem 2.4s ease-in-out infinite;
 }
 
-/* псевдо-миниатюра таблицы */
-.mode-illustration.simple div {
-  height: 18px;
-  border-radius: 999px;
-  background: linear-gradient(to right, rgba(148, 163, 184, 0.9), rgba(55, 65, 81, 0.8));
-  transform: translateX(0);
-  animation: rowsScroll 1.8s ease-in-out infinite;
+/* сдвигаем каждую «карточку» по фазе, чтобы был эффект потока */
+.mode-illustration.cards div:nth-child(1) {
+  animation-delay: 0s;
+}
+.mode-illustration.cards div:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.mode-illustration.cards div:nth-child(3) {
+  animation-delay: 0.8s;
 }
 
-/* чуть сдвигаем строки по времени, чтобы был эффект "пролистывания" */
-.mode-illustration.simple div:nth-child(1) { animation-delay: 0s; }
-.mode-illustration.simple div:nth-child(2) { animation-delay: 0.15s; }
-.mode-illustration.simple div:nth-child(3) { animation-delay: 0.3s; }
-.mode-illustration.simple div:nth-child(4) { animation-delay: 0.45s; }
-
-@keyframes rowsScroll {
+@keyframes cardsScrollItem {
   0% {
-    transform: translateX(0);
-    opacity: 0.7;
+    transform: translateY(0%);
+    opacity: 1;
   }
-  50% {
-    transform: translateX(8px);
+  35% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  36% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(0%);
     opacity: 1;
   }
   100% {
-    transform: translateX(0);
-    opacity: 0.7;
+    transform: translateY(0%);
+    opacity: 1;
   }
 }
 
 
+.mode-illustration.simple {
+  grid-template-columns: 1fr;
+  overflow: hidden;
+}
+
 .mode-illustration.simple div {
-  height: 18px;
+  height: 14px;
   border-radius: 999px;
   background: linear-gradient(to right, rgba(148, 163, 184, 0.9), rgba(55, 65, 81, 0.8));
+  transform: translateY(0%);
+  opacity: 0.8;
+  animation: rowsScrollItem 1.8s ease-in-out infinite;
 }
+
+.mode-illustration.simple div:nth-child(1) { animation-delay: 0s; }
+.mode-illustration.simple div:nth-child(2) { animation-delay: 0.25s; }
+.mode-illustration.simple div:nth-child(3) { animation-delay: 0.5s; }
+.mode-illustration.simple div:nth-child(4) { animation-delay: 0.75s; }
+
+@keyframes rowsScrollItem {
+  0% {
+    transform: translateY(0%);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translateY(-150%);
+    opacity: 0;
+  }
+  41% {
+    transform: translateY(150%);
+    opacity: 0;
+  }
+  80% {
+    transform: translateY(0%);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 0.8;
+  }
+}
+
 
 .mode-card-title {
   font-size: 14px;
