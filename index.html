@@ -5,565 +5,7 @@
   <title>ZenitFiles — загрузка файлов</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="ZenitFiles — простое хранилище файлов для скачивания." />
-  <style>
-    :root {
-      --bg: #050816;
-      --bg-soft: #0b1020;
-      --card: #10182a;
-      --accent: #3b82f6;
-      --accent-soft: rgba(59, 130, 246, 0.12);
-      --text: #f9fafb;
-      --muted: #9ca3af;
-      --border: rgba(148, 163, 184, 0.2);
-      --radius-xl: 18px;
-      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .wrapper {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 16px 40px;
-      width: 100%;
-    }
-
-    header {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-
-    .logo-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      background: conic-gradient(from 160deg, #60a5fa, #22d3ee, #6366f1, #60a5fa);
-      padding: 2px;
-      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
-    }
-
-    .logo-mark-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: radial-gradient(circle at 30% 0, rgba(248, 250, 252, 0.5), #020617);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      font-size: 14px;
-      color: #e5e7eb;
-    }
-
-    .title-block h1 {
-      font-size: clamp(24px, 3vw, 30px);
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .title-block p {
-      font-size: 14px;
-      color: var(--muted);
-      max-width: 520px;
-    }
-
-    .info-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .pill {
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
-    }
-
-    main {
-      flex: 1;
-    }
-
-    /* отступ между секциями (каталоги ↔ видео ↔ админка) */
-    section + section {
-      margin-top: 26px;
-    }
-
-    .file-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-    }
-
-    .file-card {
-      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.1), transparent 55%), var(--card);
-      border-radius: var(--radius-xl);
-      padding: 12px 12px 14px;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-      box-shadow: 0 14px 35px rgba(15, 23, 42, 0.5);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .file-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.08), transparent 55%),
-        radial-gradient(circle at 100% 0, rgba(96, 165, 250, 0.15), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.2s ease-out;
-      pointer-events: none;
-    }
-
-    .file-card:hover::before {
-      opacity: 1;
-    }
-
-    /* Адаптивная обложка */
-    .file-cover-wrap {
-      width: 100%;
-      overflow: hidden;
-      border-radius: 14px;
-      border: 1px solid rgba(148, 163, 184, 0.28);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #020617;
-    }
-
-    .file-cover {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      background-color: #020617;
-      transition: transform 0.25s ease-out;
-    }
-
-    .file-card:hover .file-cover {
-      transform: scale(1.03);
-    }
-
-    .file-body {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 4px 2px 0;
-      flex: 1;
-    }
-
-    .file-title {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .file-desc {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-
-    .file-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .meta-pill {
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-    }
-
-    .file-footer {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .download-btn {
-      appearance: none;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 7px 13px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #2563eb, #22c55e);
-      color: #f9fafb;
-      font-size: 13px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.55);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .download-btn span {
-      font-size: 15px;
-    }
-
-    .hint {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    footer {
-      margin-top: 32px;
-      font-size: 11px;
-      color: var(--muted);
-      border-top: 1px solid rgba(30, 64, 175, 0.6);
-      padding-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    a {
-      color: #93c5fd;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 640px) {
-      .wrapper {
-        padding-inline: 12px;
-      }
-      header {
-        margin-bottom: 24px;
-      }
-      .file-card {
-        padding: 10px 10px 12px;
-      }
-    }
-
-    /* ----- АДАПТИВНАЯ СЕТКА ДЛЯ ВИДЕО ----- */
-    .file-grid-videos {
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    }
-
-    .video-card {
-      max-width: 100%;
-    }
-
-    .admin-button,
-    .simple-button {
-      cursor: pointer;
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      font: inherit;
-    }
-
-    .admin-button:hover,
-    .simple-button:hover {
-      border-color: var(--accent);
-      color: #e5e7eb;
-    }
-
-    /* ----- УПРОЩЁННЫЙ ВИД (ТАБЛИЦА) ----- */
-    #simple-view {
-      display: none;
-    }
-
-    .simple-table {
-      background: var(--card);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      font-size: 13px;
-    }
-
-    .simple-header,
-    .simple-row {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 1.3fr) auto;
-      gap: 12px;
-      padding: 8px 12px;
-      align-items: center;
-    }
-
-    .simple-header {
-      background: rgba(15, 23, 42, 0.9);
-      font-size: 12px;
-      color: var(--muted);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
-    }
-
-    .simple-row:nth-child(odd) {
-      background: rgba(15, 23, 42, 0.8);
-    }
-
-    .simple-row:nth-child(even) {
-      background: rgba(15, 23, 42, 0.95);
-    }
-
-    .simple-main-title {
-      font-weight: 600;
-    }
-
-    .simple-main-desc {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .simple-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .simple-meta span {
-      padding: 2px 8px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .simple-action {
-      text-align: right;
-    }
-
-    @media (max-width: 700px) {
-      .simple-header,
-      .simple-row {
-        grid-template-columns: minmax(0, 1fr);
-        align-items: flex-start;
-      }
-      .simple-action {
-        text-align: left;
-      }
-    }
-
-    /* ----- Админ-панель ----- */
-    #admin-panel .file-card {
-      border-style: dashed;
-    }
-
-    .admin-section {
-      margin-top: 14px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(148, 163, 184, 0.35);
-    }
-
-    .admin-section-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .admin-list {
-      font-size: 12px;
-      color: var(--muted);
-      margin-left: 16px;
-      margin-top: 4px;
-      line-height: 1.4;
-    }
-
-    .admin-list li + li {
-      margin-top: 3px;
-    }
-
-    .admin-toggles {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .admin-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .admin-toggle input {
-      accent-color: #22c55e;
-    }
-
-    /* ----- Стартовый выбор режима ----- */
-    #mode-chooser {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.7), rgba(2, 6, 23, 0.97));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 40;
-    }
-
-    .mode-dialog {
-      max-width: 680px;
-      width: 100%;
-      padding: 18px 16px 20px;
-    }
-
-    .mode-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .mode-subtitle {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .mode-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-    }
-
-    .mode-card {
-      background: var(--card);
-      border-radius: 16px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      padding: 12px 12px 14px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.75);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, border-color 0.15s ease-out, background 0.15s ease-out;
-    }
-
-    .mode-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-      box-shadow: 0 20px 45px rgba(37, 99, 235, 0.7);
-      background: radial-gradient(circle at top, rgba(59, 130, 246, 0.16), var(--card));
-    }
-
-    .mode-chip {
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--muted);
-    }
-
-    .mode-illustration {
-      margin-top: 6px;
-      border-radius: 12px;
-      padding: 8px;
-      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.18), rgba(15, 23, 42, 0.9));
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      display: grid;
-      gap: 4px;
-    }
-
-    /* псевдо-миниатюра карточек */
-    .mode-illustration.cards {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .mode-illustration.cards div {
-      height: 46px;
-      border-radius: 10px;
-      background:
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.1) 0, rgba(15, 23, 42, 0.9) 55%),
-        url("data:image/svg+xml,%3Csvg width='60' height='32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='32' rx='5' fill='%231f2937'/%3E%3C/svg%3E");
-      border: 1px solid rgba(148, 163, 184, 0.4);
-    }
-
-    /* псевдо-миниатюра таблицы */
-    .mode-illustration.simple {
-      grid-template-columns: 1fr;
-    }
-
-    .mode-illustration.simple div {
-      height: 18px;
-      border-radius: 999px;
-      background: linear-gradient(to right, rgba(148, 163, 184, 0.9), rgba(55, 65, 81, 0.8));
-    }
-
-    .mode-card-title {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .mode-card-text {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .mode-footer-note {
-      margin-top: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    @media (max-width: 600px) {
-      .mode-dialog {
-        padding-inline: 10px;
-      }
-    }
-
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="wrapper">
@@ -577,6 +19,7 @@
           <p>Простая страница для скачивания файлов. Открой ссылку, выбери нужный файл и забери его одним кликом.</p>
         </div>
       </div>
+
       <div class="info-row">
         <div class="pill">
           <span class="pill-dot"></span>
@@ -594,6 +37,30 @@
         <button class="pill simple-button" type="button" id="simple-toggle-btn" onclick="toggleSimpleMode()">
           ☰ Упрощённый вид
         </button>
+      </div>
+
+      <!-- Панель фильтров -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <div class="filter-label">Тип контента</div>
+          <div class="filter-buttons" id="kind-filters">
+            <button class="filter-btn active" data-kind="all">Все</button>
+            <button class="filter-btn" data-kind="pdf">Каталоги</button>
+            <button class="filter-btn" data-kind="video">Видео</button>
+            <button class="filter-btn" data-kind="image">Изображения</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">Тематика</div>
+          <div class="filter-buttons" id="topic-filters">
+            <button class="filter-btn active" data-topic="all">Все</button>
+            <button class="filter-btn" data-topic="жд">ЖД</button>
+            <button class="filter-btn" data-topic="архитектура">Архитектура</button>
+            <button class="filter-btn" data-topic="город">Город</button>
+            <button class="filter-btn" data-topic="прочее">Прочее</button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -645,7 +112,10 @@
         <section id="catalogs-section" class="file-grid">
 
           <!-- 1. Каталог_ЖД освещение – Zenit -->
-          <article class="file-card">
+          <article class="file-card"
+                   data-group="catalog"
+                   data-kind="pdf"
+                   data-topic="жд">
             <div class="file-cover-wrap">
               <img src="covers/Cover1.png" alt="Каталог ЖД освещение – Zenit" class="file-cover" />
             </div>
@@ -669,7 +139,10 @@
           </article>
 
           <!-- 2. Каталог_Светодиодные светильники и лампы – Zenit -->
-          <article class="file-card">
+          <article class="file-card"
+                   data-group="catalog"
+                   data-kind="pdf"
+                   data-topic="прочее">
             <div class="file-cover-wrap">
               <img src="covers/Cover2.png" alt="Каталог Светодиодные светильники и лампы – Zenit" class="file-cover" />
             </div>
@@ -693,7 +166,10 @@
           </article>
 
           <!-- 3. Каталог_Светодиодные фары и фонари – Zenit -->
-          <article class="file-card">
+          <article class="file-card"
+                   data-group="catalog"
+                   data-kind="pdf"
+                   data-topic="прочее">
             <div class="file-cover-wrap">
               <img src="covers/Cover3.png" alt="Каталог Светодиодные фары и фонари – Zenit" class="file-cover" />
             </div>
@@ -722,7 +198,10 @@
         <section id="videos-section" class="file-grid file-grid-videos">
 
           <!-- 1. 2025 презентация – Zenit -->
-          <article class="file-card video-card">
+          <article class="file-card video-card"
+                   data-group="video"
+                   data-kind="video"
+                   data-topic="город">
             <div class="file-cover-wrap">
               <img src="covers/Cover4.png"
                    alt="2025 презентация – Zenit"
@@ -751,7 +230,10 @@
           </article>
 
           <!-- 2. Архитектурное освещение – Zenit -->
-          <article class="file-card video-card">
+          <article class="file-card video-card"
+                   data-group="video"
+                   data-kind="video"
+                   data-topic="архитектура">
             <div class="file-cover-wrap">
               <img src="covers/Cover5.png"
                    alt="Архитектурное освещение – Zenit"
@@ -794,7 +276,10 @@
           </div>
 
           <!-- Каталог: ЖД освещение -->
-          <div class="simple-row" data-group="catalog">
+          <div class="simple-row"
+               data-group="catalog"
+               data-kind="pdf"
+               data-topic="жд">
             <div>
               <div class="simple-main-title">Каталог: ЖД освещение – Zenit</div>
               <div class="simple-main-desc">PDF-каталог по решениям ЖД освещения.</div>
@@ -811,7 +296,10 @@
           </div>
 
           <!-- Каталог: Светильники и лампы -->
-          <div class="simple-row" data-group="catalog">
+          <div class="simple-row"
+               data-group="catalog"
+               data-kind="pdf"
+               data-topic="прочее">
             <div>
               <div class="simple-main-title">Каталог: Светодиодные светильники и лампы</div>
               <div class="simple-main-desc">PDF-каталог светодиодных светильников и ламп Zenit.</div>
@@ -828,7 +316,10 @@
           </div>
 
           <!-- Каталог: фары и фонари -->
-          <div class="simple-row" data-group="catalog">
+          <div class="simple-row"
+               data-group="catalog"
+               data-kind="pdf"
+               data-topic="прочее">
             <div>
               <div class="simple-main-title">Каталог: Светодиодные фары и фонари</div>
               <div class="simple-main-desc">PDF-каталог светодиодных фар и фонарей Zenit.</div>
@@ -845,7 +336,10 @@
           </div>
 
           <!-- Видео: 2025 презентация -->
-          <div class="simple-row" data-group="video">
+          <div class="simple-row"
+               data-group="video"
+               data-kind="video"
+               data-topic="город">
             <div>
               <div class="simple-main-title">2025 презентация – Zenit</div>
               <div class="simple-main-desc">Видеопрезентация продукции Zenit на 2025 год.</div>
@@ -865,7 +359,10 @@
           </div>
 
           <!-- Видео: Архитектурное освещение -->
-          <div class="simple-row" data-group="video">
+          <div class="simple-row"
+               data-group="video"
+               data-kind="video"
+               data-topic="архитектура">
             <div>
               <div class="simple-main-title">Архитектурное освещение – Zenit</div>
               <div class="simple-main-desc">Видеоролик о решениях Zenit для архитектурной подсветки.</div>
@@ -983,214 +480,6 @@
     </footer>
   </div>
 
-  <script>
-    // год в подвале
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // текущий режим: 'cards' или 'simple'
-    let currentViewMode = null;
-
-    // форматирование размера (для шапки)
-    function formatBytes(bytes) {
-      const units = ["Б", "КБ", "МБ", "ГБ", "ТБ"];
-      let i = 0;
-      let value = bytes;
-
-      while (value >= 1024 && i < units.length - 1) {
-        value = value / 1024;
-        i++;
-      }
-
-      const fixed =
-        value >= 10 || i === 0
-          ? value.toFixed(0)
-          : value.toFixed(1);
-
-      return fixed.replace(".", ",") + " " + units[i];
-    }
-
-    async function updateFilesInfo() {
-      const links = Array.from(document.querySelectorAll(".download-btn"));
-      if (!links.length) return;
-
-      const uniqueHrefs = [...new Set(links.map(a => a.href))];
-      let totalBytes = 0;
-
-      await Promise.all(
-        uniqueHrefs.map(async (url) => {
-          const linkEl = links.find(a => a.href === url);
-
-          const sizeAttr = linkEl && linkEl.getAttribute("data-size");
-          if (sizeAttr) {
-            const size = parseInt(sizeAttr, 10);
-            if (!isNaN(size)) totalBytes += size;
-            return;
-          }
-
-          try {
-            const res = await fetch(url, { method: "HEAD" });
-            const len = res.headers.get("content-length");
-            if (len) {
-              const size = parseInt(len, 10);
-              if (!isNaN(size)) totalBytes += size;
-            }
-          } catch (e) {
-            // если не получилось — просто пропускаем
-          }
-        })
-      );
-
-      const el = document.getElementById("files-info");
-      if (!el) return;
-
-      const count = uniqueHrefs.length;
-      let text = "Доступно " + count + " файл";
-
-      if (count % 10 === 1 && count % 100 !== 11) {
-        text += "";
-      } else if (
-        [2, 3, 4].includes(count % 10) &&
-        ![12, 13, 14].includes(count % 100)
-      ) {
-        text += "а";
-      } else {
-        text += "ов";
-      }
-
-      if (totalBytes > 0) {
-        text += " • " + formatBytes(totalBytes);
-      }
-
-      el.textContent = text;
-    }
-
-    // ----- Настройки панелей (каталоги / видео) -----
-    const PANEL_KEYS = {
-      catalogs: "zf_panel_catalogs_visible",
-      videos: "zf_panel_videos_visible",
-    };
-
-    function getPanelFlag(key, defaultValue) {
-      try {
-        const v = localStorage.getItem(key);
-        if (v === null) return defaultValue;
-        return v !== "0";
-      } catch (e) {
-        return defaultValue;
-      }
-    }
-
-    function setPanelFlag(key, value) {
-      try {
-        localStorage.setItem(key, value ? "1" : "0");
-      } catch (e) {
-        // ничего страшного, если localStorage недоступен
-      }
-    }
-
-    function applyPanelVisibility() {
-      const catalogsOn = getPanelFlag(PANEL_KEYS.catalogs, true);
-      const videosOn = getPanelFlag(PANEL_KEYS.videos, true);
-
-      const catalogsSection = document.getElementById("catalogs-section");
-      const videosSection = document.getElementById("videos-section");
-
-      if (catalogsSection) catalogsSection.style.display = catalogsOn ? "" : "none";
-      if (videosSection) videosSection.style.display = videosOn ? "" : "none";
-
-      // Упрощённый вид — строки каталога/видео
-      document.querySelectorAll(".simple-row[data-group='catalog']").forEach(row => {
-        row.style.display = catalogsOn ? "" : "none";
-      });
-      document.querySelectorAll(".simple-row[data-group='video']").forEach(row => {
-        row.style.display = videosOn ? "" : "none";
-      });
-
-      const chCat = document.getElementById("toggle-catalogs");
-      const chVid = document.getElementById("toggle-videos");
-      if (chCat) chCat.checked = catalogsOn;
-      if (chVid) chVid.checked = videosOn;
-    }
-
-    function initPanelToggles() {
-      const chCat = document.getElementById("toggle-catalogs");
-      const chVid = document.getElementById("toggle-videos");
-
-      if (chCat) {
-        chCat.addEventListener("change", function () {
-          setPanelFlag(PANEL_KEYS.catalogs, this.checked);
-          applyPanelVisibility();
-        });
-      }
-      if (chVid) {
-        chVid.addEventListener("change", function () {
-          setPanelFlag(PANEL_KEYS.videos, this.checked);
-          applyPanelVisibility();
-        });
-      }
-    }
-
-    function openAdmin() {
-      const pass = prompt("Введите пароль администратора:");
-      const correct = "310172431";
-
-      if (pass === correct) {
-        document.getElementById("admin-panel").style.display = "block";
-        alert("Админ-панель разблокирована. Пролистай страницу ниже.");
-        applyPanelVisibility(); // на всякий случай обновим состояние чекбоксов
-      } else if (pass !== null) {
-        alert("Неверный пароль.");
-      }
-    }
-
-    // ----- Режим отображения (карточки / простой) -----
-    function setViewMode(mode) {
-      currentViewMode = mode;
-      const cards = document.getElementById("cards-view");
-      const simple = document.getElementById("simple-view");
-      const btn = document.getElementById("simple-toggle-btn");
-
-      if (mode === "simple") {
-        if (cards) cards.style.display = "none";
-        if (simple) simple.style.display = "block";
-        if (btn) btn.textContent = "⬅ Полный вид";
-      } else {
-        if (cards) cards.style.display = "";
-        if (simple) simple.style.display = "none";
-        if (btn) btn.textContent = "☰ Упрощённый вид";
-      }
-    }
-
-    function chooseMode(mode) {
-      setViewMode(mode);
-      const chooser = document.getElementById("mode-chooser");
-      if (chooser) chooser.style.display = "none";
-    }
-
-    function toggleSimpleMode() {
-      // если выбор ещё не сделан — просто показываем карточки как дефолт
-      if (!currentViewMode) {
-        setViewMode("cards");
-        const chooser = document.getElementById("mode-chooser");
-        if (chooser) chooser.style.display = "none";
-        return;
-      }
-
-      if (currentViewMode === "cards") {
-        setViewMode("simple");
-      } else {
-        setViewMode("cards");
-      }
-    }
-
-    // Инициализация
-    updateFilesInfo();
-    applyPanelVisibility();
-    initPanelToggles();
-
-    // По умолчанию до выбора режима скрываем оба вида:
-    setViewMode("cards"); // чтобы всё инициализировалось
-    // но окно выбора поверх перекрывает контент
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
